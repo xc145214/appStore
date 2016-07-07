@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- ############################################################################# -->
+    <!-- ############################MYSQL数据源配置########################## -->
+    <bean id="mysqlDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${dataSource.mysql.url}" />
+        <property name="username" value="${dataSource.mysql.username}" />
+        <property name="password" value="${dataSource.mysql.password}" />
+        <property name="initialSize" value="${dataSource.mysql.initialSize}" />
+        <property name="minIdle" value="${dataSource.mysql.minIdle}" />
+        <property name="maxActive" value="${dataSource.mysql.maxActive}" />
+        <property name="maxWait" value="${dataSource.mysql.maxWait}" />
+        <property name="timeBetweenEvictionRunsMillis" value="${dataSource.mysql.timeBetweenEvictionRunsMillis}" />
+        <property name="minEvictableIdleTimeMillis" value="${dataSource.mysql.minEvictableIdleTimeMillis}" />
+        <property name="validationQuery" value="SELECT 1 FROM dual" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+    </bean>
+
+    <!-- JDBC数据源关联配置 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="mysqlDataSource"/>
+    </bean>
+
+    <!-- 事务管理器配置 -->
+    <tx:annotation-driven transaction-manager="jdbcTransactionManager" proxy-target-class="true"/>
+
+    <bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mysqlDataSource"/>
+    </bean>
+
+    <!-- Spring 与 mybatis集成  -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mysqlDataSource" />
+    </bean>
+
+    <!-- 扫描指定基包下面的所有接口，并把它们注册为一个个MapperFactoryBean对象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.appStore.dao" />
+    </bean>
+
+</beans>

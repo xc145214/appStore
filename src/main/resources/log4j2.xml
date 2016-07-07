@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="LogConfiguration" status="WARN" strict="false" monitorInterval="30">
+    <Properties>
+        <Property name="logging.directory">${sys:user.home}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="logging.default" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5p][%-50C][%10M:%-4L][%d{yyyy-MM-dd HH:mm:ss}] - %m%throwable{full}%n"/>
+        </Console>
+        <RollingRandomAccessFile
+                name="logging.admin"
+                fileName="${sys:logging.directory}/appStore/logs/appStore.log"
+                filePattern="${sys:logging.directory}/appStore/logs/appStore/$${date:yyyy-MM}-%d{dd}-%i.log.gz"
+                ignoreExceptions="false"
+                append="true">
+            <PatternLayout header="" footer="" charset="UTF8">
+                <Pattern>[%-5p][%-50C][%10M:%-4L][%d{HH:mm:ss}] - %d{yyyy-MM-dd HH:mm:ss,SSS}|%X{EAGLEEYE_TRACE_ID}|%X{EAGLEEYE_RPC_ID}|%m%throwable{full}%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <!--
+                    Interval value is interpreted in context of pattern that is specified as part of filePattern. It starts with lowest denomination.
+                    For example,if pattern contains S, frequency will be in millisecond. It supports the date pattern as described in detail as part
+                    of SimpleDateFormat java doc http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html。也就是说以
+                    filePattern中的最低配置为准。
+                -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!--<OnStartupTriggeringPolicy/>-->
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="10"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <!--<Filters>
+        <filter/>
+    </Filters>-->
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="logging.default"/>
+        </Root>
+        <AsyncLogger name="com.appStore" level="DEBUG" includeLocation="true" additivity="false">
+            <AppenderRef ref="logging.default"/>
+        </AsyncLogger>
+        <!--
+            可以通过这种方式控制各个开源库的日志输出级别(只要开源库使用了slf4j或者apache
+            commons logging)。
+        -->
+        <AsyncLogger name="org.springframework" level="ERROR" includeLocation="true" additivity="false">
+            <AppenderRef ref="logging.default"/>
+        </AsyncLogger>
+    </Loggers>
+</Configuration>

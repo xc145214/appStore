@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author xiachuan at 2016/7/7 12:03。
  */
 
-public class User implements Serializable{
+public class User extends BaseEntiy implements Serializable {
 
     /**
      * column：user_id。
@@ -47,5 +47,42 @@ public class User implements Serializable{
      * comment：邮箱地址。
      */
     private String email;
+
+
+    public User() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }
 
