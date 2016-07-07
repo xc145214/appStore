@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  *  @author xiachuan at 2016/7/7 19:45。
  */
 
-public class HttpUtils {
+public final class HttpUtils {
 
     protected static final Logger LOG = LogManager.getLogger(HttpUtils.class);
     public static final String DEFAULT_CHARSET = "UTF-8";

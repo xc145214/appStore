@@ -26,7 +26,7 @@ import java.io.StringWriter;
  *  @author xiachuan at 2016/7/7 19:46。
  */
 
-public class JsonUtils {
+public final class JsonUtils {
     public JsonUtils() {
     }
     private static final ObjectMapper mapper = new ObjectMapper();
