@@ -9,8 +9,8 @@
         </Console>
         <RollingRandomAccessFile
                 name="logging.admin"
-                fileName="${sys:logging.directory}/appStore/logs/appStore.log"
-                filePattern="${sys:logging.directory}/appStore/logs/appStore/$${date:yyyy-MM}-%d{dd}-%i.log.gz"
+                fileName="${sys:logging.directory}/logs/appStore.log"
+                filePattern="${sys:logging.directory}/logs/appStore/$${date:yyyy-MM}-%d{dd}-%i.log.gz"
                 ignoreExceptions="false"
                 append="true">
             <PatternLayout header="" footer="" charset="UTF8">

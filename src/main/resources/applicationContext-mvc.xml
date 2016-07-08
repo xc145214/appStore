@@ -229,7 +229,7 @@
         <property name="fallbackToSystemLocale" value="false"/>
         <property name="basenames">
             <list>
-                <value>com.hongling.admin.i18n.error</value>
+                <value>com.appStore.common.i18n.error</value>
             </list>
         </property>
     </bean>
