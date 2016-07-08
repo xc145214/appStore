@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Yelin.G at 2015/03/27 16:53
  */
 @ContextConfiguration("classpath:applicationContext-test.xml")
 @PropertySource("classpath:test.properties")
