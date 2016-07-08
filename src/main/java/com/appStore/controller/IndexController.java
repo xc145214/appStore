@@ -33,6 +33,11 @@ public class IndexController extends BaseController {
     public IndexController() {
     }
 
+
+
+
+
+
     @RequestMapping(value = "showParams",produces = "application/json")
     @ResponseBody
     public Map<String,Object> showParams(HttpServletRequest request){

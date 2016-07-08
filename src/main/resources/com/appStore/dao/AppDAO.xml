@@ -32,6 +32,12 @@
         from app_info
         where appid = #{appid,jdbcType=VARCHAR}
     </select>
+    <select id="readAllCount" resultType="java.lang.Integer">
+        SELECT  COUNT (1) FROM app_info
+    </select>
+    <select id="readPageList" resultType="com.appStore.entity.App">
+        SELECT <include refid="Base_Column_List" /> FROM app_info Order by appid Limit
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
         <!--
           WARNING - @mbggenerated
