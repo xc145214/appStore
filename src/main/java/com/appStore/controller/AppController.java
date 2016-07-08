@@ -40,6 +40,7 @@ public class AppController extends BaseController {
             Integer start,
             Integer limit,
             HttpServletRequest request) {
+
         Map<String, Object> map = new HashMap<String, Object>();
         int total = 0;
         List<App> list = new ArrayList<App>();
@@ -49,6 +50,7 @@ public class AppController extends BaseController {
             list = appService.getPageList(start, limit);
         } catch (Exception e) {
             map.put("message",e.getMessage());
+            map.put("params",getParams(request));
         }
         map.put("total",total);
         map.put("rows",list);

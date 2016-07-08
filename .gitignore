@@ -19,3 +19,5 @@ hs_err_pid*
 target/
 
 src/main/resources/app.properties
+
+src/main/webapp/bower_components
