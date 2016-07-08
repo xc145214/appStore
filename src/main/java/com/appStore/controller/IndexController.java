@@ -14,29 +14,29 @@
  */
 package com.appStore.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- *  控制器中基础公共方法的定义，被控制器们继承
+ *  首页。
  *
- *  @author xiachuan at 2016/7/7 11:30。
+ *  @author xiachuan at 2016/7/8 13:28。
  */
+@RequestMapping(value = "index")
+@Controller
+public class IndexController extends BaseController {
 
-public abstract class BaseController {
-
-    public BaseController() {
+    public IndexController() {
     }
 
-    /**
-     *  通过Http请求获取参数。
-     *
-     * @param request
-     * @return
-     */
-    protected Map getParams(HttpServletRequest request){
-        return   request.getParameterMap();
+    @RequestMapping(value = "showParams",produces = "application/json")
+    @ResponseBody
+    public Map<String,Object> showParams(HttpServletRequest request){
+        return getParams(request);
     }
-
 }
 
