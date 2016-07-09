@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="span12">
+        <div class="list-group">
+
+            <h3 class="page-header">Top 10 Apps</h3>
+            <div class="list-group-item" ng-repeat="app in appList track by $index">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{app.appid}}</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img alt="app_img" class="img-thumbnail" ng-src="{{app.thumbnailUrl}}"/>
+                            </div>
+                            <div class="col-md-9">
+                                <ul>
+                                    <li>{{app.title}}</li>
+                                    <li>
+                                        intor:{{app.intro}}
+                                    </li>
+                                    <li>rate:{{app.score}}/10</li>
+                                    <li>
+                                        <button class="btn btn-primary" type="button" ng-click="selectApp(app)">GET
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
