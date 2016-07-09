@@ -36,7 +36,7 @@
        select count(1) from app_info
     </select>
     <select id="readPageList" resultType="com.appStore.entity.App">
-        SELECT <include refid="Base_Column_List" /> FROM app_info Order by appid Limit
+        SELECT <include refid="Base_Column_List" /> FROM app_info Order by appid limit #{start},#{limit}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
         <!--
