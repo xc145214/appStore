@@ -9,18 +9,19 @@
 <body ng-app="store">
 <div class="container">
 
-    <div class="row" ng-controller="appList as apps">
+    <div class="row" ng-controller="appListCtrl">
         <div class="span12">
 
             <div class="list-group" >
 
                 <a href="#" class="list-group-item active">Top 10 Apps</a>
                 <button class="btn-info btn-default btn" type="button" ng-click="list()">get</button>
-                <div class="list-group-item" ng-repeat="app in apps.appList">
-                    <table class="list-group-item-text">
+                <div class="list-group-item" ng-repeat="app in appList track by $index">
+                    <table class="table list-group-item-text">
                         <tr>
                             <td id="show_appid" rowspan="2">{{app.appid}}</td>
-                            <td id="show_img" rowspan="2"><img alt="app_img" ng-src="{{app.thumbnail_url}}"/></td>
+                            <td id="show_img" rowspan="2"><img alt="app_img" ng-src="{{app.thumbnail_url}}"/>
+                                {{app.thumbnail_url}}</td>
                             <td id="show_appname" colspan="2">{{app.title}}</td>
                             <td id="get_appdetail" rowspan="2">
                                 <button class="btn btn-primary" type="button" ng-click="apps.selectApp(app)">GET
