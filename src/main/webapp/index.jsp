@@ -8,6 +8,7 @@
 </head>
 <body ng-app="store">
 <div class="container-fluid">
+
     <div class="row-fluid" ng-controller="appList as apps">
         <div class="span12">
 
