@@ -25,6 +25,9 @@ public class AppServiceImpl implements AppService {
         return appDAO.readAllCount();
     }
 
+    /**
+     * {@link AppService#getPageList(Integer, Integer)}的实现。
+     */
     @Override
     public List<App> getPageList(Integer start, Integer limit) {
         return appDAO.readPageList(start,limit);
