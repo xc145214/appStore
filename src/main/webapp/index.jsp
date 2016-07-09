@@ -7,9 +7,9 @@
 
 </head>
 <body ng-app="store">
-<div class="container-fluid">
+<div class="container">
 
-    <div class="row-fluid" ng-controller="appList as apps">
+    <div class="row" ng-controller="appList as apps">
         <div class="span12">
 
             <div class="list-group" >

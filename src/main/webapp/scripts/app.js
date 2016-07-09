@@ -9,7 +9,7 @@
             $scope.list = function () {
                 console.log("hello app list");
 
-                $http({method:"GET",url: "/app/list", param: {start: 0, limit: 10}}).then(function successCallback(response) {
+                $http({method:"GET",url: "app/list", params: {start: 0, limit: 10}}).then(function successCallback(response) {
 
                     console.log(response.data);
                     console.log(response.status);
