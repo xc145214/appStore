@@ -11,7 +11,7 @@
 <div class="container" ng-controller="RootCtrl">
 
 
-
+    <div ui-view></div>
 
 </div>
 <script src="${pageContext.request.contextPath}/bower_components/angular/angular.min.js"></script>

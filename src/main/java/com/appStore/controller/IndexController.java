@@ -26,17 +26,12 @@ import java.util.Map;
  *
  *  @author xiachuan at 2016/7/8 13:28。
  */
-@RequestMapping(value = "index")
+
 @Controller
 public class IndexController extends BaseController {
 
     public IndexController() {
     }
-
-
-
-
-
 
     @RequestMapping(value = "showParams",produces = "application/json")
     @ResponseBody
