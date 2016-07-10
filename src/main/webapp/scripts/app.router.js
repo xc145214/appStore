@@ -27,7 +27,7 @@
                     'scripts/components/app.controller.js',
                     'scripts/components/app.template.html',
                     'scripts/components/logger.service.js',
-                    'scripts/components/app.service.js',
+                    'scripts/components/app.service.js'
                 ]
             }, {
                 name: "appList",
