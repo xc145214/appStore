@@ -19,7 +19,8 @@
          * @param params 分页参数
          * @returns {*}
          */
-        function getAppList(params) {
+        function getAppList(start) {
+            var params ={start:start,limit:10};
             return $http.get('app/list', {params: params})
                 .then(getAppListSuccess)
                 .catch(getAppListFailed);

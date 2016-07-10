@@ -4,11 +4,9 @@
 (function () {
     angular.module("store", [
         'ui.router',
+        'ui.bootstrap',
         'oc.lazyLoad'
-    ])
-        .controller('RootCtrl', ['$scope', function ($scope) {
-
-        }])
+    ]);
 
 
 })()

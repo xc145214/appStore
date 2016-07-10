@@ -17,6 +17,12 @@
             debug: true,
             events: true,
             modules: [{
+                name:"bootstrap",
+                files:[
+                    'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+                    'bower_components/angular-bootstrap/ui-bootstrap-csp.css'
+                ]
+            }, {
                 name: "root",
                 files: [
                     'scripts/components/root.controller.js'
@@ -47,6 +53,9 @@
                 templateUrl: 'scripts/components/app.template.html',
                 controller: 'AppController',
                 resolve: {
+                    loadboostrap:['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('bootstrap');
+                    }],
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('app');
                     }]

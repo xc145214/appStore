@@ -30,6 +30,14 @@
 
             </div>
 
+            <uib-pagination
+                    total-items="bigTotalItems"
+                    ng-model="bigCurrentPage"
+                    max-size="maxSize"
+                    class="pagination-md"
+                    ng-change="pageChanged()"
+                    boundary-links="true"
+                    force-ellipses="true"></uib-pagination>
         </div>
     </div>
 </div>
