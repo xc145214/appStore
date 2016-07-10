@@ -6,25 +6,31 @@
 
     angular
         .module('store')
-        .controller('AppListController',appListCtrl);
+        .controller('AppListController', appListCtrl);
 
-    appListCtrl.$inject = ['$scope','$http'];
+    appListCtrl.$inject = ['$scope', '$http','logger','appService'];
 
-    function appListCtrl($scope,$http) {
+    function appListCtrl($scope, $http,logger,appService) {
         var vm = $scope;
-        vm.list = function () {
-            $http({
-                method: "GET",
-                url: "app/list",
-                params: {start: 0, limit: 10}
-            }).then(function successCallback(response) {
-                vm.appList = response.data.rows;
-            }, function errorCallback(response) {
-                $scope.data = response.data || "Request failed";
-                $scope.status = response.status;
+        vm.appList = [];
+        var params = {start: 0, limit: 10};
+
+        activate();
+
+        function activate() {
+            return getApps().then(function() {
+                logger.info('Activated appList View');
             });
-        };
-        vm.list();
+        }
+
+        function getApps() {
+            return appService.getAppList(params)
+                .then(function(data) {
+                    vm.appList = data.rows;
+                    return vm.appList;
+                });
+        }
+        
         vm.selectApp = function (app) {
             console.log(app);
         }

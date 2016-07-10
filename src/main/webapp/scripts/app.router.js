@@ -25,7 +25,9 @@
                 name: "app",
                 files: [
                     'scripts/components/app.controller.js',
-                    'scripts/components/app.template.html'
+                    'scripts/components/app.template.html',
+                    'scripts/components/logger.service.js',
+                    'scripts/components/app.service.js',
                 ]
             }, {
                 name: "appList",
@@ -42,7 +44,7 @@
         $stateProvider
             .state('app', {
                 url: "/app",
-                templateUrl: 'scripts/partials/app.html',
+                templateUrl: 'scripts/components/app.template.html',
                 controller: 'AppController',
                 resolve: {
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -52,7 +54,7 @@
             })
             .state('app.list', {
                 url: "/list",
-                templateUrl: "scripts/partials/app.list.html",
+                templateUrl: "scripts/components/appList.template.html",
                 controller: 'AppListController',
                 resolve: {
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
