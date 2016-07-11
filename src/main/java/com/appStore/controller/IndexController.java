@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -37,6 +38,17 @@ public class IndexController extends BaseController {
     @ResponseBody
     public Map<String,Object> showParams(HttpServletRequest request){
         return getParams(request);
+    }
+
+
+    @RequestMapping(value = "authImage")
+    public void authImage(HttpServletRequest request,HttpServletResponse response){
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+
+
     }
 }
 
