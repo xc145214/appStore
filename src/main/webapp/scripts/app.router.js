@@ -17,10 +17,16 @@
             debug: true,
             events: true,
             modules: [{
-                name:"bootstrap",
-                files:[
+                name: "bootstrap",
+                files: [
                     'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
                     'bower_components/angular-bootstrap/ui-bootstrap-csp.css'
+                ]
+            }, {
+                name: 'dataService',
+                files: [
+                    'scripts/components/logger.service.js',
+                    'scripts/components/app.service.js'
                 ]
             }, {
                 name: "root",
@@ -31,9 +37,7 @@
                 name: "app",
                 files: [
                     'scripts/components/app.controller.js',
-                    'scripts/components/app.template.html',
-                    'scripts/components/logger.service.js',
-                    'scripts/components/app.service.js'
+                    'scripts/components/app.template.html'
                 ]
             }, {
                 name: "appList",
@@ -53,11 +57,8 @@
                 templateUrl: 'scripts/components/app.template.html',
                 controller: 'AppController',
                 resolve: {
-                    loadboostrap:['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('bootstrap');
-                    }],
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('app');
+                        return $ocLazyLoad.load(['bootstrap', 'dataService', 'app']);
                     }]
                 }
             })
