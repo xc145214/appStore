@@ -14,7 +14,7 @@
     function routerConfig($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         //懒加载配置：
         $ocLazyLoadProvider.config({
-            debug: true,
+            debug: false,
             events: true,
             modules: [{
                 name: "bootstrap",
