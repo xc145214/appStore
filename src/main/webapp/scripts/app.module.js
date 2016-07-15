@@ -5,7 +5,8 @@
     angular.module("store", [
         'ui.router',
         'ui.bootstrap',
-        'oc.lazyLoad'
+        'oc.lazyLoad',
+        'angular-loading-bar'
     ]);
 
 

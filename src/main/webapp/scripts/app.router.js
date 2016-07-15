@@ -23,6 +23,11 @@
                     'bower_components/angular-bootstrap/ui-bootstrap-csp.css'
                 ]
             }, {
+                name: "loading-bar",
+                files: [
+                    'bower_components/angular-loading-bar/build/loading-bar.min.css'
+                ]
+            },{
                 name: 'dataService',
                 files: [
                     'scripts/components/logger.service.js',
@@ -64,7 +69,7 @@
                 controller: 'AppController',
                 resolve: {
                     load: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load(['bootstrap', 'dataService', 'app']);
+                        return $ocLazyLoad.load(['bootstrap', 'dataService', 'app','loading-bar']);
                     }]
                 }
             })
