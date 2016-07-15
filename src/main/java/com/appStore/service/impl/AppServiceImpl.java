@@ -32,4 +32,9 @@ public class AppServiceImpl implements AppService {
     public List<App> getPageList(Integer start, Integer limit) {
         return appDAO.readPageList(start,limit);
     }
+
+    @Override
+    public App getAppById(String appid) {
+        return appDAO.selectByPrimaryKey(appid);
+    }
 }

@@ -25,4 +25,11 @@ public interface AppService {
      * @return
      */
     List<App> getPageList(Integer start,Integer limit);
+
+    /**
+     * 根据appid 查询App详情。
+     * @param appid
+     * @return
+     */
+    App getAppById(String appid);
 }

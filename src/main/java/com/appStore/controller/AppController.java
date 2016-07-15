@@ -56,4 +56,15 @@ public class AppController extends BaseController {
         map.put("rows",list);
         return map;
     }
+
+    /**
+     * app 详情。
+     * @param appid
+     * @return
+     */
+    @RequestMapping(value = "getAppInfo",produces = "application/json")
+    @ResponseBody
+    public App getAppInfo(String appid){
+        return appService.getAppById(appid);
+    }
 }

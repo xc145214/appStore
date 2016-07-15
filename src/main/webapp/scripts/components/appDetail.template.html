@@ -1,0 +1,47 @@
+<div class="row">
+    <h1 class="page-header">app 详情</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img alt="app_img" class="img-thumbnail" ng-src="{{app.thumbnailUrl}}">
+        </div>
+        <div class="col-md-8">
+            <div class="row form-group ">
+                <label  class="col-sm-4 control-label">appid :</label>
+                <div class="col-sm-8">
+                    {{ app.appid }}
+                </div>
+            </div>
+            <div class=" row form-group">
+                <label  class="col-sm-4 control-label">app title :</label>
+                <div class="col-sm-8">
+                    {{ app.title }}
+                </div>
+            </div>
+            <div class=" row form-group">
+                <label  class="col-sm-4 control-label">app intro :</label>
+                <div class="col-sm-8">
+                    {{ app.intro }}
+                </div>
+            </div>
+            <div class=" row form-group">
+                <label  class="col-sm-4 control-label">app score :</label>
+                <div class="col-sm-8">
+                    {{ app.score }}
+                </div>
+            </div>
+            <div class=" row form-group">
+                <label  class="col-sm-4 control-label">app developer :</label>
+                <div class="col-sm-8">
+                    {{ app.developer }}
+                </div>
+            </div>
+            <div class=" row form-group">
+                <label  class="col-sm-4 control-label">download address :</label>
+                <div class="col-sm-8">
+                   <a href="{{ app.url}}">详细地址</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

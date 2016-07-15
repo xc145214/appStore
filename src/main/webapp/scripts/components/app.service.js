@@ -11,30 +11,40 @@
 
     function appService($http, logger) {
         return {
-            getAppList: getAppList
+            getAppList: getAppList,
+            getAppInfo: getAppInfo
         };
 
         /**
-         * 获取app列表
-         * @param params 分页参数
+         * 获取app列表。
+         * @param params 分页参数。
          * @returns {*}
          */
         function getAppList(start) {
-            var params ={start:start,limit:10};
+            var params = {start: start, limit: 10};
             return $http.get('app/list', {params: params})
-                .then(getAppListSuccess)
-                .catch(getAppListFailed);
-
-            function getAppListSuccess(response) {
-                return response.data;
-            }
-
-            function getAppListFailed(error) {
-                logger.error('XHR Failed for getAppList.' + error.data);
-            }
-
+                .then(getDataSuccess)
+                .catch(getDataFailed);
         }
 
+        /**
+         * 获取App详情。
+         * @param params
+         * @returns {*}
+         */
+        function getAppInfo(params) {
+            return $http.get('app/getAppInfo', {params: params})
+                .then(getDataSuccess)
+                .catch(getDataFailed);
+        }
+
+        function getDataSuccess(response) {
+            return response.data;
+        }
+
+        function getDataFailed(error) {
+            logger.error('XHR Failed for getAppList.' + error.data);
+        }
 
 
     }

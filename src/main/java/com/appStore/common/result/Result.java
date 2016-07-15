@@ -23,7 +23,7 @@ package com.appStore.common.result;
 
 public abstract class Result {
 
-    public static GLOBAL  GLOBAL = new GLOBAL();
+    public static final GLOBAL  GLOBAL = new GLOBAL();
 
 
     public static class GLOBAL{

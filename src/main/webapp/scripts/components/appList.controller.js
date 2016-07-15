@@ -8,9 +8,9 @@
         .module('store')
         .controller('AppListController', appListCtrl);
 
-    appListCtrl.$inject = ['$scope', '$http', 'logger', 'appService'];
+    appListCtrl.$inject = ['$scope',  'logger', 'appService'];
 
-    function appListCtrl($scope, $http, logger, appService) {
+    function appListCtrl($scope,  logger, appService) {
         var vm = $scope;
         vm.appList = [];
         $scope.bigCurrentPage = 1;
@@ -22,6 +22,7 @@
         vm.pageChanged = function () {
             activate();
         };
+
 
         function activate() {
             return getApps().then(function () {
@@ -38,8 +39,5 @@
                 });
         }
 
-        vm.selectApp = function (app) {
-            console.log(app);
-        }
     }
-})()
+})();

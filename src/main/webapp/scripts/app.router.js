@@ -45,6 +45,12 @@
                     'scripts/components/appList.controller.js',
                     'scripts/components/appList.template.html'
                 ]
+            },{
+                name: "appDetail",
+                files: [
+                    'scripts/components/appDetail.controller.js',
+                    'scripts/components/appDetail.template.html'
+                ]
             }]
         });
 
@@ -71,6 +77,16 @@
                         return $ocLazyLoad.load('appList');
                     }]
                 }
+            })
+            .state('app.detail',{
+                url:"/detail/:appid",
+                templateUrl:"scripts/components/appDetail.template.html",
+                controller:"AppDetailController",
+                resolve:{
+                    load: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('appDetail');
+                    }]
+                }
             });
     }
-})()
+})();
