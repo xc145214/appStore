@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *  @author xiachuan at 2016/7/7 13:38。
  */
 
-public abstract class BaseEntiy {
+public abstract class BaseEntity {
 
     /**
      * @see java.lang.Object#equals(Object)

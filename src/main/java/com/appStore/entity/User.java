@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author xiachuan at 2016/7/7 12:03。
  */
 
-public class User extends BaseEntiy implements Serializable {
+public class User extends BaseEntity implements Serializable {
 
     /**
      * column：user_id。

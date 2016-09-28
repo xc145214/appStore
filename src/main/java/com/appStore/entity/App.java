@@ -4,7 +4,7 @@ package com.appStore.entity;
  * app实体（table="app_info"）
  * Created by Administrator on 2016/7/7.
  */
-public class App extends BaseEntiy{
+public class App extends BaseEntity {
 
 
     /**
