@@ -37,11 +37,14 @@
 
 
     <!--通用线程池，作为所有异步调用的线程入口-->
-    <bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
-        <property name="corePoolSize" value="50"/>
-        <property name="keepAliveSeconds" value="3600"/>
-        <property name="maxPoolSize" value="60"/>
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!--核心线程数：默认为1，一般为CPU的倍数-->
+        <property name="corePoolSize" value="4"/>
+        <!--任务队列：默认为Int.MAX,-->
+        <property name="queueCapacity" value="10"/>
+        <!--最大线程数：当队列占满后，开始增加线程数，直到扩展到最大线程数-->
+        <property name="maxPoolSize" value="8"/>
+        <property name="keepAliveSeconds" value="60"/>
         <property name="rejectedExecutionHandler">
             <bean class="java.util.concurrent.ThreadPoolExecutor.DiscardPolicy"/>
         </property>
@@ -49,6 +52,7 @@
         <property name="threadGroupName" value="${threadName}"/>
         <property name="awaitTerminationSeconds" value="3600"/>
         <property name="allowCoreThreadTimeOut" value="true"/><!--配合keepAliveSeconds一起使用-->
+        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
     </bean>
 
 
