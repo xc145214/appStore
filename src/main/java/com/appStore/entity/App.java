@@ -60,6 +60,9 @@ public class App extends BaseEntity {
         return appid;
     }
 
+    public Integer getAppidAsInt(){
+        return Integer.valueOf(appid.substring(1));
+    }
 
     public void setAppid(String appid) {
         this.appid = appid == null ? null : appid.trim();

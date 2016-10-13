@@ -16,7 +16,7 @@
   <!--常量-->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.compiler>1.6</project.compiler>
+    <project.compiler>1.7</project.compiler>
     <project.env.resources>${project.basedir}/src/main/resources</project.env.resources>
     <project.env.test.resources>${project.basedir}/src/main/resources-test</project.env.test.resources>
     <project.env.pre-production.resources>${project.basedir}/src/main/resources-pre-production
