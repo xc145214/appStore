@@ -38,6 +38,9 @@
     <select id="readPageList" resultType="com.appStore.entity.App">
         SELECT <include refid="Base_Column_List" /> FROM app_info Order by appid limit #{start},#{limit}
     </select>
+    <select id="readAllList" resultType="com.appStore.entity.App">
+        SELECT * FROM app_info
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
         <!--
           WARNING - @mbggenerated

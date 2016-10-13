@@ -30,6 +30,7 @@ public interface AppDAO {
             @Param("start") Integer start,
             @Param("limit") Integer limit);
 
+    List<App> readAllList();
 
     int deleteByPrimaryKey(String appid);
 

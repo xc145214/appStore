@@ -1,6 +1,8 @@
 package com.appStore.controller;
 
+import com.appStore.common.domain.Page;
 import com.appStore.entity.App;
+import com.appStore.service.AppCacheService;
 import com.appStore.service.AppService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,9 @@ public class AppController extends BaseController {
 
     @Resource
     AppService appService;
+
+    @Resource
+    AppCacheService appCacheService;
 
     /**
      * app 分页列表。
@@ -67,4 +72,31 @@ public class AppController extends BaseController {
     public App getAppInfo(String appid){
         return appService.getAppById(appid);
     }
+
+    /**
+     *  从缓存中获取App信息。
+     * @param pageSze
+     * @param currentPage
+     * @return
+     */
+    @RequestMapping(value = "listFormCache", produces = "application/json")
+    @ResponseBody
+    public Page<App> listFormCache(
+            Integer pageSze,
+            Integer currentPage){
+        int size = pageSze == null?10:pageSze;
+        int cutPage = currentPage == null?1:currentPage;
+        Page<App> appPage = null;
+        try {
+            appPage = appCacheService.loadAppFromCache(1,1,size,cutPage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (appPage == null){
+            appPage = new Page<>();
+        }
+        return appPage;
+    }
+
+
 }
