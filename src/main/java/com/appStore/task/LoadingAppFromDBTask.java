@@ -12,32 +12,33 @@
  * HONGLING CAPITAL CONFIDENTIAL AND PROPRIETARY
  * ***********************************************************************
  */
-package com.appStore.service;
+package com.appStore.task;
 
-import com.appStore.common.domain.Page;
-import com.appStore.entity.App;
+import com.appStore.service.AppCacheService;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
- *  App 缓存服务。
+ *  定时从数据库中加载数据到本地。
  *
- *  @author xiachuan at 2016/10/12 17:11。
+ *  @author xiachuan at 2016/10/13 17:08。
  */
+@Component
+public class LoadingAppFromDBTask {
 
-public interface AppCacheService {
+    @Resource
+    AppCacheService appCacheService;
 
     /**
-     * APP列表排序。
-     *
-     * @param oc    排序字段。
-     * @param ou    顺序1，倒序，0
-     * @param pageSize  分页大小。
-     * @param currentPage   当前页。
-     * @return
+     * 间隔10秒执行，更新缓存中的投资列表到本地。
      */
-    Page<App> loadAppFromCache(int oc,int ou,int pageSize,int currentPage);
+    @Scheduled(cron="0/10 * * * * ? ")
+    public void loadBiddingListFromCache(){
+        appCacheService.loadAppFromDB();
 
-    void loadAppFromDB();
+        System.out.println("Loading from DB!");
+    }
 }
 

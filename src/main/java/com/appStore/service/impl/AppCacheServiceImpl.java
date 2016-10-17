@@ -23,6 +23,7 @@ import com.appStore.util.AppComparatorScoreAsc;
 import com.appStore.util.AppComparatorScoreDesc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.List;
  *
  *  @author xiachuan at 2016/10/13 9:28。
  */
-
+@Service("appCacheService")
 public class AppCacheServiceImpl implements AppCacheService {
     Logger LOG = LogManager.getLogger(AppCacheServiceImpl.class);
 
@@ -54,6 +55,12 @@ public class AppCacheServiceImpl implements AppCacheService {
     public static List<App> appUserMap = new ArrayList<>();
     public static boolean refresh = false;
 
+
+    @Override
+    public void loadAppFromDB() {
+        appUserMap = appDAO.readAllList();
+    }
+
     @Override
     public Page<App> loadAppFromCache(int oc, int ou, int pageSize, int currentPage) {
 
@@ -69,7 +76,7 @@ public class AppCacheServiceImpl implements AppCacheService {
 //            }
 //        }
 
-        appUserMap = appDAO.readAllList();
+//        appUserMap = appDAO.readAllList();
 
         List<App> cacheList = sortData(oc, ou, appUserMap);
         //设置当前页及页大小
@@ -88,6 +95,14 @@ public class AppCacheServiceImpl implements AppCacheService {
     }
 
 
+    /**
+     * 排序。
+     *
+     * @param oc
+     * @param ou
+     * @param list
+     * @return
+     */
     private List<App> sortData(int oc,int ou,List<App> list){
 
         List<App> result = new ArrayList<>();

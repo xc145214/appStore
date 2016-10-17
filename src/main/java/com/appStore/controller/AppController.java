@@ -75,16 +75,16 @@ public class AppController extends BaseController {
 
     /**
      *  从缓存中获取App信息。
-     * @param pageSze
+     * @param pageSize
      * @param currentPage
      * @return
      */
     @RequestMapping(value = "listFormCache", produces = "application/json")
     @ResponseBody
     public Page<App> listFormCache(
-            Integer pageSze,
+            Integer pageSize,
             Integer currentPage){
-        int size = pageSze == null?10:pageSze;
+        int size = pageSize == null?10:pageSize;
         int cutPage = currentPage == null?1:currentPage;
         Page<App> appPage = null;
         try {
