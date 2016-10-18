@@ -21,6 +21,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
+import static org.junit.Assert.assertEquals;
+
 /**
  *  mock单元测试
  *
@@ -44,13 +49,17 @@ public class AppServiceTest {
     @Before
     public void setUp() throws Exception {
 
-        ReflectionTestUtils.setField(appService,"appDAO",AppDAO.class);
-
+        ReflectionTestUtils.setField(appService,"appDAO",appDAO);
 
     }
 
     @Test
-    public void testName() throws Exception {
+    public void testGetAllCount() throws Exception {
+
+        Integer count = appService.getAllCount();
+        assertEquals(count,null);
+
+        expect(appDAO);
 
 
     }
