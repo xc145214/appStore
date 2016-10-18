@@ -17,6 +17,7 @@ public class AppServiceImpl implements AppService {
 
     @Resource
     private AppDAO appDAO;
+
     /**
      * {@link AppService#getAllCount()}的实现。
      */

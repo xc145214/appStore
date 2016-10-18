@@ -17,8 +17,6 @@ package com.appStore.service;
 import com.appStore.common.domain.Page;
 import com.appStore.entity.App;
 
-import java.util.List;
-
 /**
  *  App 缓存服务。
  *
@@ -38,6 +36,9 @@ public interface AppCacheService {
      */
     Page<App> loadAppFromCache(int oc,int ou,int pageSize,int currentPage);
 
+    /**
+     * 从DB中获取数据。
+     */
     void loadAppFromDB();
 }
 
