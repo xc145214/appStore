@@ -40,5 +40,15 @@ public interface AppCacheService {
      * 从DB中获取数据。
      */
     void loadAppFromDB();
+
+    /**
+     * 定时任务，从KV或DB加载数据刷新给本地MAP缓存。
+     */
+    void reloadCacheTask();
+
+    /**
+     * 从缓存加载到本地内存。
+     */
+    void refreshCacheList();
 }
 

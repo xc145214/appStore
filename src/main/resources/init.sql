@@ -1,18 +1,3 @@
--- create table;
-
-CREATE TABLE `app_info` (
-  `appid` varchar(20) NOT NULL COMMENT '主键app的ID',
-  `score` int(2) DEFAULT NULL COMMENT '评分',
-  `title` varchar(30) DEFAULT NULL COMMENT '标题',
-  `url` varchar(255) DEFAULT NULL COMMENT '详情地址',
-  `thumbnail_url` varchar(255) DEFAULT NULL COMMENT '下载地址',
-  `intro` varchar(255) DEFAULT NULL COMMENT '说明',
-  `developer` varchar(255) DEFAULT NULL COMMENT '开发者',
-  `top5App` varchar(110) DEFAULT NULL COMMENT 'top 5 app',
-  PRIMARY KEY (`appid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app_info表';
-
-
 -- insert data;
 
 INSERT INTO `app_info` (`appid`, `score`, `title`, `url`, `thumbnail_url`, `intro`, `developer`, `top5App`) VALUES ('C10000291', 10, '妈妈圈-怀孕育儿亲子辣妈孕期', 'http://appstore.huawei.com:80/app/C10000291', 'http://appimg.hicloud.com/hwmarket/files/application/icon144/b803c38ca8794bb6963858e13f50853b.png', '妈妈圈-怀孕育儿亲子辣妈孕期:妈妈圈，超过4000万妈妈使用，妈妈们喜爱的社交平台！ 妈妈圈，10个妈妈9个在用妈妈圈！ 妈妈圈，备孕、怀孕、育儿3大模式，陪伴在妈妈身边！  【孕育经验】100人孕育研究团队，10年积累知识分享，4000万妈妈真实经验 【兴趣交流】厨艺、DIY、手工、化妆美体瘦型，100个圈子真人直播，包学包会 【活动交友】500个城', '广州盛成文化传播有限公司', '[C10100760, C134730, C35918, C10144837, C10207478]');

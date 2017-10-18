@@ -15,6 +15,8 @@
 package com.appStore.task;
 
 import com.appStore.service.AppCacheService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,7 @@ import javax.annotation.Resource;
  */
 @Component
 public class LoadingAppFromDBTask {
-
+    protected static final Logger LOG = LogManager.getLogger(LoadingAppFromDBTask.class);
     @Resource
     AppCacheService appCacheService;
 
@@ -36,9 +38,22 @@ public class LoadingAppFromDBTask {
      */
     @Scheduled(cron="0/10 * * * * ? ")
     public void loadBiddingListFromCache(){
-        appCacheService.loadAppFromDB();
 
-        System.out.println("Loading from DB!");
+        try {
+            appCacheService.reloadCacheTask();
+        }catch (Exception e){
+            LOG.error("间隔10秒执行，更形列表缓存出错！e:{}",e.getStackTrace());
+        }
+    }
+
+
+    @Scheduled(cron = "0 */6 * * * ?")
+    public void autoRefreshCacheList(){
+        try {
+            appCacheService.refreshCacheList();
+        }catch (Exception e){
+            LOG.error("间隔10秒执行，更形列表缓存出错！e:{}",e.getStackTrace());
+        }
     }
 }
 

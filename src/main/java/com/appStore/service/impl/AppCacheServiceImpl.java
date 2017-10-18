@@ -14,22 +14,32 @@
  */
 package com.appStore.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.appStore.common.cache.CacheSessionStorage;
 import com.appStore.common.domain.Page;
+import com.appStore.common.thread.CountDownLatchExecutor;
 import com.appStore.dao.AppDAO;
 import com.appStore.entity.App;
+import com.appStore.exceutor.CallBack;
+import com.appStore.exceutor.ThreadExecutor;
 import com.appStore.service.AppCacheService;
 import com.appStore.util.AppComparatorIdAsc;
 import com.appStore.util.AppComparatorScoreAsc;
 import com.appStore.util.AppComparatorScoreDesc;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 /**
  *  缓存服务实现。
@@ -40,8 +50,18 @@ import java.util.List;
 public class AppCacheServiceImpl implements AppCacheService {
     Logger LOG = LogManager.getLogger(AppCacheServiceImpl.class);
 
+    String APP_CACHE_LIST = "_APP_CACHE_LIST";
+
+    String APP_CHACHE_PREFIX = "_APP_CACHE_";
+
+    int expireTime = 86400;
+
     @Resource
     AppDAO appDAO;
+    @Resource
+    private CacheSessionStorage cacheSessionStorage;
+    @Resource
+    private ThreadExecutor executor;
 
     public static Comparator appComparatorIdAsc = new AppComparatorIdAsc();//id默认排序。
 
@@ -66,17 +86,17 @@ public class AppCacheServiceImpl implements AppCacheService {
 
         Page<App> page = new Page<>();
 
-//        if(refresh) {
-//            synchronized (this){
-//                if(refresh) {
-//                    appUserMap.clear();
-//                    appUserMap.addAll(appCacheMap);
-//                    refresh = false;
-//                }
-//            }
-//        }
+        if(refresh) {
+            synchronized (this){
+                if(refresh) {
+                    appUserMap.clear();
+                    appUserMap.addAll(appCacheMap);
+                    refresh = false;
+                }
+            }
+        }
 
-//        appUserMap = appDAO.readAllList();
+        appUserMap = appDAO.readAllList();
 
         List<App> cacheList = sortData(oc, ou, appUserMap);
         //设置当前页及页大小
@@ -94,6 +114,133 @@ public class AppCacheServiceImpl implements AppCacheService {
         return page;
     }
 
+    /**
+     * 从KV或DB中加载数据刷新到本地MAP缓存。
+     */
+    @Override
+    public void reloadCacheTask() {
+        Set<String> appIds = cacheSessionStorage.getAllMembersInSet(APP_CACHE_LIST);
+        /**
+         * 如果缓存不为空。
+         */
+        if(!CollectionUtils.isEmpty(appIds)){
+
+            List<CallBack> distributedCallBacks =new ArrayList<>(appIds.size());
+            final List<App> appList = new CopyOnWriteArrayList<>();
+            final List<String> dataList = new ArrayList<>();
+            for(String id:appIds){
+                dataList.add(id);
+            }
+
+            int length = appIds.size();
+            final int threadNum = 10;
+            final int pageSze = length % threadNum == 0 ? length/threadNum :(length/threadNum) +1;
+
+            for (int i =0;i<threadNum;i++){
+
+                final int start =i*pageSze;
+                final int end = (i+1) * pageSze>length?length:(i+1)*pageSze;
+                distributedCallBacks.add (new CallBack() {
+                    @Override
+                    public void call() {
+                        try {
+                            for (int i = start; i < end; i++) {
+                                App app = _loadSingleAppFromCacheOrDB(dataList.get(i));
+                                if (app != null) {
+
+                                    appList.add(app);
+                                } else {
+                                    //删除缓存记录。
+                                    _removeSingleCache(dataList.get(i));
+                                }
+                            }
+                        } catch (Exception e) {
+                            LOG.error(" load app from cache error：{}", e.getStackTrace());
+                        }
+                    }
+                });
+            }
+
+
+            executor.excute(distributedCallBacks);
+
+            appCacheMap = appList;
+            refresh = true;
+
+        }else{
+            // 如果缓存为空
+            appCacheMap =_loadAllFromDB();
+            refresh =true;
+        }
+
+    }
+
+    @Override
+    public void refreshCacheList() {
+        List<App> apps = appDAO.readAllList();
+        Set<String> idSet = new HashSet<>();
+        if(apps!=null && apps.size()>0){
+            for(App app:apps){
+                idSet.add(app.getAppid());
+            }
+        }
+        Set<String> idsFromCache = cacheSessionStorage.getAllMembersInSet(APP_CACHE_LIST);
+        //新数据刷入缓存。
+        for(String appId :idSet){
+            if(!idsFromCache.contains(appId)){
+                cacheSessionStorage.addToSet(APP_CACHE_LIST,appId);
+            }
+        }
+        //老数据删除。
+        for(String appId:idsFromCache){
+            if(!idSet.contains(appId)){
+                cacheSessionStorage.removeFromSet(APP_CACHE_LIST,appId);
+            }
+        }
+
+
+
+    }
+
+    private List<App> _loadAllFromDB(){
+
+        List<App> apps = appDAO.readAllList();
+
+        if(!CollectionUtils.isEmpty(apps)){
+            for(App app:apps){
+                //更新缓存集合
+                cacheSessionStorage.addToSet(APP_CACHE_LIST,app.getAppid());
+                //放入单个APP缓存
+                cacheSessionStorage.setAndClose(APP_CHACHE_PREFIX+app.getAppid(),JSON.toJSONString(app),expireTime);
+
+            }
+            return apps;
+        }else{
+            return null;
+        }
+    }
+
+    private void _removeSingleCache(String appid){
+        cacheSessionStorage.removeAndClose(APP_CHACHE_PREFIX+appid);
+        cacheSessionStorage.removeFromSet(APP_CACHE_LIST,appid);
+    }
+
+    private App _loadSingleAppFromCacheOrDB(String appId) {
+        String jsonObject = cacheSessionStorage.getAndClose(APP_CHACHE_PREFIX+appId);
+        //缓存存在
+        if (!StringUtils.isEmpty(jsonObject)) {
+            return JSON.parseObject(jsonObject, App.class);
+        }
+        else{
+            //缓存不存在从DB中加载
+            App app = appDAO.selectByPrimaryKey(appId);
+            if(app!= null){
+                cacheSessionStorage.setAndClose(APP_CHACHE_PREFIX+appId,JSON.toJSON(app),expireTime);
+                return app;
+            }
+            return null;
+        }
+    }
 
     /**
      * 排序。

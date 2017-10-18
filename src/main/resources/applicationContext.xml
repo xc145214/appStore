@@ -41,20 +41,42 @@
         <!--核心线程数：默认为1，一般为CPU的倍数-->
         <property name="corePoolSize" value="4"/>
         <!--任务队列：默认为Int.MAX,-->
-        <property name="queueCapacity" value="10"/>
+        <property name="queueCapacity" value="10000"/>
         <!--最大线程数：当队列占满后，开始增加线程数，直到扩展到最大线程数-->
-        <property name="maxPoolSize" value="8"/>
+        <property name="maxPoolSize" value="16"/>
         <property name="keepAliveSeconds" value="60"/>
+        <!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->
         <property name="rejectedExecutionHandler">
+            <!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->
+            <!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->
+            <!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+            <!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
             <bean class="java.util.concurrent.ThreadPoolExecutor.DiscardPolicy"/>
         </property>
-        <property name="threadNamePrefix" value="${threadPrefix}"/>
-        <property name="threadGroupName" value="${threadName}"/>
+        <property name="threadNamePrefix" value="APP_SERVICE"/>
+        <property name="threadGroupName" value="APP_SERVICE"/>
         <property name="awaitTerminationSeconds" value="3600"/>
         <property name="allowCoreThreadTimeOut" value="true"/><!--配合keepAliveSeconds一起使用-->
         <property name="waitForTasksToCompleteOnShutdown" value="true"/>
     </bean>
 
+
+    <!--
+     KV Store只能在阿里云内部访问。
+ -->
+    <bean id="jedisClient" class="com.appStore.common.cache.JedisClient">
+        <constructor-arg name="host" value="${kvstore.host}"/>
+        <constructor-arg name="port" value="${kvstore.port}"/>
+        <constructor-arg name="instanceName" value="${kvstore.instanceName}"/>
+        <constructor-arg name="password" value="${kvstore.password}"/>
+        <constructor-arg name="maxIdle" value="${kvstore.maxIdle}"/>
+        <constructor-arg name="maxTotal" value="${kvstore.maxTotal}"/>
+        <constructor-arg name="maxWaitMillis" value="${kvstore.maxWaitMillis}"/>
+    </bean>
+
+    <bean class="com.appStore.common.cache.CacheSessionStorage">
+        <property name="jedisClient" ref="jedisClient"></property>
+    </bean>
 
     <!--开启这个配置，spring才能识别@Scheduled注解   -->
     <task:scheduler id="qbScheduler" pool-size="10"/>
